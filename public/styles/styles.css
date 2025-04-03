@@ -1,0 +1,923 @@
+/* Modern UI Variables */
+:root {
+    --primary-color: #4f46e5;
+    --secondary-color: #6366f1;
+    --success-color: #10b981;
+    --warning-color: #f59e0b;
+    --danger-color: #ef4444;
+    --info-color: #3b82f6;
+    --light-color: #f3f4f6;
+    --dark-color: #1f2937;
+    --gradient-primary: linear-gradient(135deg, #4f46e5 0%, #6366f1 100%);
+    --gradient-success: linear-gradient(135deg, #10b981 0%, #059669 100%);
+    --gradient-danger: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+    --shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.05);
+    --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.1);
+    --shadow-lg: 0 10px 15px rgba(0, 0, 0, 0.1);
+}
+
+/* Global Styles */
+body {
+    font-family: 'Poppins', sans-serif;
+    background-color: #f8fafc;
+    color: var(--dark-color);
+}
+
+/* Enhanced Navbar */
+.navbar {
+    background-color: #1a237e;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.navbar-brand {
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: white !important;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.navbar-brand i {
+    font-size: 1.8rem;
+    filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.2));
+}
+
+.nav-link {
+    color: rgba(255, 255, 255, 0.9) !important;
+    font-weight: 500;
+    padding: 0.5rem 1rem !important;
+    border-radius: 8px;
+    transition: all 0.3s ease;
+}
+
+.nav-link:hover, .nav-link.active {
+    background-color: rgba(255,255,255,0.1);
+    border-radius: 4px;
+    transform: translateY(-2px);
+    color: white !important;
+}
+
+/* Card Styles */
+.card {
+    border: none;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    margin-bottom: 2rem;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+    box-shadow: var(--shadow-lg);
+}
+
+.card-header {
+    background-color: #1a237e;
+    color: white;
+    padding: 1rem;
+}
+
+/* Table Styles */
+.table {
+    margin: 0;
+}
+
+.table thead th {
+    background-color: #f8f9fa;
+    font-weight: 600;
+    padding: 1rem;
+    border: none;
+}
+
+.table tbody tr {
+    transition: all 0.3s ease;
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.table tbody tr:hover {
+    background-color: var(--light-color);
+    transform: scale(1.01);
+    box-shadow: var(--shadow-sm);
+}
+
+/* Status Badges */
+.badge {
+    padding: 0.5em 0.8em;
+    font-weight: 500;
+}
+
+.bg-success { background: var(--gradient-success) !important; }
+.bg-danger { background: var(--gradient-danger) !important; }
+.bg-warning { background: var(--warning-color) !important; }
+.bg-info { background: var(--info-color) !important; }
+
+/* Button Styles */
+.btn {
+    padding: 0.5rem 1.25rem;
+    font-weight: 500;
+    border-radius: 8px;
+    border: none;
+    transition: all 0.3s ease;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.btn-primary {
+    background-color: #1a237e;
+    border-color: #1a237e;
+}
+
+.btn-primary:hover {
+    background-color: #151b58;
+    border-color: #151b58;
+}
+
+.btn-success {
+    background: var(--gradient-success);
+}
+
+.btn-danger {
+    background: var(--gradient-danger);
+}
+
+.btn:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-md);
+}
+
+/* Form Styles */
+.form-control, .form-select {
+    border: 1px solid #e5e7eb;
+    padding: 0.75rem 1rem;
+    border-radius: 8px;
+    transition: all 0.3s ease;
+}
+
+.form-control:focus, .form-select:focus {
+    border-color: #1a237e;
+    box-shadow: 0 0 0 0.2rem rgba(26,35,126,0.25);
+}
+
+.input-group-text {
+    background: var(--light-color);
+    border: 1px solid #e5e7eb;
+    padding: 0.75rem 1rem;
+}
+
+/* Modal Styles */
+.modal-content {
+    border: none;
+    border-radius: 15px;
+    overflow: hidden;
+}
+
+.modal-header {
+    background-color: #1a237e;
+    color: white;
+}
+
+.modal-title {
+    font-weight: 600;
+}
+
+.modal-footer {
+    border-top: 1px solid #e5e7eb;
+    padding: 1rem;
+}
+
+/* Toast Notifications */
+.toast {
+    background-color: #fff;
+    border: none;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+}
+
+.toast-container {
+    z-index: 1060;
+}
+
+.toast-header {
+    background-color: #1a237e;
+    color: white;
+}
+
+/* DataTable Customization */
+.dataTables_wrapper {
+    padding: 1.5rem;
+}
+
+.dataTables_filter input {
+    border: 1px solid #e5e7eb;
+    border-radius: 8px;
+    padding: 0.5rem 1rem;
+    margin-left: 0.5rem;
+}
+
+.dataTables_length select {
+    border: 1px solid #e5e7eb;
+    border-radius: 8px;
+    padding: 0.5rem;
+    margin: 0 0.5rem;
+}
+
+/* Animations */
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.animate-fade-in {
+    animation: fadeIn 0.5s ease-out;
+}
+
+/* Loading Spinner */
+.dataTables_processing {
+    background: rgba(255, 255, 255, 0.9) !important;
+    border-radius: 12px !important;
+    box-shadow: var(--shadow-lg) !important;
+    padding: 1rem !important;
+    font-weight: 500 !important;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .navbar-brand {
+        font-size: 1.25rem;
+    }
+
+    .card-header {
+        padding: 1rem;
+    }
+
+    .table thead th {
+        padding: 0.75rem;
+    }
+
+    .btn {
+        padding: 0.5rem 1rem;
+    }
+
+    .dataTables_wrapper {
+        padding: 1rem;
+    }
+
+    .container {
+        padding-left: 1rem;
+        padding-right: 1rem;
+    }
+    
+    .card-body {
+        padding: 1rem;
+    }
+}
+
+/* Add these new styles */
+.stat-card {
+    border-radius: 15px;
+    overflow: hidden;
+    transition: all 0.3s ease;
+}
+
+.stat-card-body {
+    padding: 1.5rem;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.stat-icon {
+    font-size: 2.5rem;
+    background: rgba(255, 255, 255, 0.2);
+    padding: 1rem;
+    border-radius: 12px;
+}
+
+.stat-content {
+    flex: 1;
+}
+
+.stat-count {
+    font-size: 2rem;
+    font-weight: 700;
+    margin: 0;
+}
+
+.stat-label {
+    margin: 0;
+    opacity: 0.9;
+}
+
+/* Chart card enhancements */
+.card {
+    margin-bottom: 1.5rem;
+}
+
+.card-header {
+    padding: 1.25rem;
+}
+
+.card-header h5 {
+    margin: 0;
+    font-weight: 600;
+}
+
+/* Action buttons */
+.action-buttons {
+    display: flex;
+    gap: 0.5rem;
+    justify-content: center;
+}
+
+.action-buttons .btn {
+    padding: 0.5rem 1rem;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+/* Recent activity table */
+#recentCallsTable {
+    margin: 0;
+}
+
+#recentCallsTable th {
+    font-weight: 600;
+}
+
+#recentCallsTable td {
+    vertical-align: middle;
+}
+
+/* Add these styles for the follow-up date input */
+.form-switch {
+    padding-left: 2.5em;
+}
+
+.form-switch .form-check-input {
+    width: 3em;
+    height: 1.5em;
+    margin-left: -2.5em;
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='-4 -4 8 8'%3e%3ccircle r='3' fill='rgba%28255, 255, 255, 0.25%29'/%3e%3c/svg%3e");
+    background-position: left center;
+    border-radius: 2em;
+    transition: background-position .15s ease-in-out;
+}
+
+.form-switch .form-check-input:checked {
+    background-position: right center;
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='-4 -4 8 8'%3e%3ccircle r='3' fill='%23fff'/%3e%3c/svg%3e");
+}
+
+/* Date input styling */
+input[type="date"] {
+    position: relative;
+}
+
+input[type="date"]::-webkit-calendar-picker-indicator {
+    background: transparent;
+    bottom: 0;
+    color: transparent;
+    cursor: pointer;
+    height: auto;
+    left: 0;
+    position: absolute;
+    right: 0;
+    top: 0;
+    width: auto;
+}
+
+.input-group-text i {
+    color: var(--primary-color);
+}
+
+/* Animation for follow-up container */
+#follow_up_date_container {
+    transition: all 0.3s ease;
+    max-height: 0;
+    opacity: 0;
+    overflow: hidden;
+}
+
+#follow_up_date_container.show {
+    max-height: 200px;
+    opacity: 1;
+    margin-top: 1rem;
+}
+
+/* Call log delete button */
+.btn-delete-log {
+    padding: 0.25rem 0.5rem;
+    border-radius: 6px;
+    transition: all 0.2s ease;
+}
+
+.btn-delete-log:hover {
+    transform: scale(1.1);
+    box-shadow: 0 2px 4px rgba(239, 68, 68, 0.2);
+}
+
+/* Add animation for row deletion */
+.deleting-row {
+    animation: fadeOutRow 0.3s ease forwards;
+}
+
+@keyframes fadeOutRow {
+    from {
+        opacity: 1;
+        transform: translateX(0);
+    }
+    to {
+        opacity: 0;
+        transform: translateX(-10px);
+    }
+}
+
+/* Add/Update these responsive table styles */
+.table-responsive {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: thin;
+}
+
+/* Custom scrollbar for the table */
+.table-responsive::-webkit-scrollbar {
+    height: 6px;
+}
+
+.table-responsive::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 3px;
+}
+
+.table-responsive::-webkit-scrollbar-thumb {
+    background: var(--primary-color);
+    border-radius: 3px;
+}
+
+/* Mobile-specific styles */
+@media (max-width: 768px) {
+    /* Card adjustments */
+    .card-body {
+        padding: 0.5rem;
+    }
+
+    /* Table adjustments */
+    .table {
+        font-size: 0.875rem; /* Smaller font size on mobile */
+    }
+
+    .table td, .table th {
+        padding: 0.5rem 0.75rem;
+        white-space: nowrap;
+    }
+
+    /* Make specific columns wrap */
+    .table td.notes-column {
+        white-space: normal;
+        min-width: 200px;
+        max-width: 300px;
+    }
+
+    /* Action buttons in table */
+    .action-buttons {
+        display: flex;
+        gap: 0.25rem;
+    }
+
+    .action-buttons .btn {
+        padding: 0.25rem 0.5rem;
+        font-size: 0.875rem;
+    }
+
+    /* DataTables controls */
+    .dataTables_wrapper {
+        padding: 0.5rem;
+    }
+
+    .dataTables_length,
+    .dataTables_filter {
+        margin-bottom: 0.5rem;
+        width: 100%;
+        text-align: left;
+    }
+
+    .dataTables_filter input {
+        width: calc(100% - 70px); /* Account for "Search:" label */
+        margin: 0;
+        margin-left: 0.5rem;
+    }
+
+    /* Status badges */
+    .badge {
+        padding: 0.25rem 0.5rem;
+        font-size: 0.75rem;
+    }
+
+    /* Container padding */
+    .container {
+        padding-left: 0.5rem;
+        padding-right: 0.5rem;
+    }
+}
+
+/* Add horizontal scroll indicator */
+.table-scroll-indicator {
+    display: none;
+    text-align: center;
+    padding: 0.5rem;
+    color: var(--primary-color);
+    font-size: 0.875rem;
+}
+
+@media (max-width: 768px) {
+    .table-scroll-indicator {
+        display: block;
+    }
+}
+
+/* Mobile enhancements */
+@media (max-width: 768px) {
+    /* Improved table header */
+    .table thead th {
+        position: sticky;
+        top: 0;
+        z-index: 10;
+        background: var(--gradient-primary);
+    }
+
+    /* Better spacing for mobile forms */
+    .modal-body {
+        padding: 1rem;
+    }
+
+    .form-control, .form-select {
+        font-size: 16px; /* Prevent zoom on iOS */
+    }
+
+    /* Improved mobile buttons */
+    .btn {
+        min-height: 44px; /* Better touch targets */
+    }
+
+    .btn-sm {
+        min-height: 32px;
+    }
+
+    /* Scroll indicators */
+    .scroll-indicator {
+        position: fixed;
+        top: 50%;
+        transform: translateY(-50%);
+        background: rgba(79, 70, 229, 0.2);
+        padding: 1rem;
+        border-radius: 50%;
+        animation: pulseIndicator 1s ease-out;
+        z-index: 1000;
+    }
+
+    .scroll-left { left: 10px; }
+    .scroll-right { right: 10px; }
+
+    @keyframes pulseIndicator {
+        0% { opacity: 1; transform: translateY(-50%) scale(1); }
+        100% { opacity: 0; transform: translateY(-50%) scale(1.5); }
+    }
+}
+
+/* Add pull-to-refresh animation */
+.refresh-indicator {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: var(--primary-color);
+    transform-origin: left;
+    animation: refreshProgress 1s linear infinite;
+}
+
+@keyframes refreshProgress {
+    0% { transform: scaleX(0); }
+    50% { transform: scaleX(0.5); }
+    100% { transform: scaleX(1); }
+}
+
+/* Mobile-optimized table styles */
+@media (max-width: 768px) {
+    /* Reset table styles */
+    .table-responsive {
+        overflow-x: visible;
+    }
+
+    /* Column widths */
+    .name-column {
+        width: 50% !important;
+    }
+    
+    .status-column {
+        width: 35% !important;
+    }
+    
+    .actions-column {
+        width: 15% !important;
+    }
+
+    /* Student info styling */
+    .student-info {
+        display: flex;
+        flex-direction: column;
+        gap: 0.25rem;
+    }
+
+    .student-name {
+        font-weight: 600;
+        font-size: 0.875rem;
+        color: var(--dark-color);
+    }
+
+    .call-time {
+        font-size: 0.75rem;
+        color: #666;
+    }
+
+    .call-notes {
+        font-size: 0.75rem;
+        color: #666;
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+        line-height: 1.2;
+        margin-top: 0.25rem;
+    }
+
+    /* Status badge styling */
+    .status-badge {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        padding: 0.35rem 0.5rem;
+        border-radius: 6px;
+        font-size: 0.75rem;
+        white-space: nowrap;
+        color: white;
+    }
+
+    .status-badge i {
+        font-size: 0.875rem;
+    }
+
+    /* Action button styling */
+    .btn-sm {
+        padding: 0.25rem;
+        height: 28px;
+        width: 28px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    /* Table cell padding */
+    .table td {
+        padding: 0.75rem 0.5rem;
+        vertical-align: middle;
+    }
+
+    /* Search box styling */
+    .dataTables_filter {
+        margin-bottom: 1rem;
+    }
+
+    .dataTables_filter input {
+        width: 100%;
+        padding: 0.5rem;
+        border: 1px solid #e2e8f0;
+        border-radius: 6px;
+        font-size: 0.875rem;
+    }
+
+    /* Pagination styling */
+    .dataTables_paginate {
+        display: flex;
+        justify-content: center;
+        margin-top: 1rem;
+    }
+
+    .paginate_button {
+        padding: 0.25rem 0.5rem;
+        margin: 0 0.25rem;
+        border-radius: 4px;
+        background: #f1f5f9;
+        color: var(--dark-color) !important;
+        font-size: 0.875rem;
+    }
+
+    .paginate_button.current {
+        background: var(--primary-color);
+        color: white !important;
+    }
+
+    /* Remove card body padding */
+    .card-body {
+        padding: 0.5rem;
+    }
+
+    /* Hide length menu */
+    .dataTables_length {
+        display: none;
+    }
+}
+
+/* Add a fade effect for table rows */
+.table tbody tr {
+    animation: fadeIn 0.3s ease-in;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* Student table mobile styles */
+@media (max-width: 768px) {
+    /* Column widths for student table */
+    .student-info-column {
+        width: 45% !important;
+    }
+    
+    .contact-column {
+        width: 40% !important;
+    }
+    
+    .actions-column {
+        width: 15% !important;
+    }
+
+    /* Student info styling */
+    .student-info {
+        display: flex;
+        flex-direction: column;
+        gap: 0.25rem;
+    }
+
+    .student-name {
+        font-weight: 600;
+        font-size: 0.875rem;
+        color: var(--dark-color);
+    }
+
+    .student-id {
+        font-size: 0.75rem;
+        color: #666;
+    }
+
+    .student-address {
+        font-size: 0.75rem;
+        color: #666;
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+        line-height: 1.2;
+    }
+
+    /* Contact info styling */
+    .contact-info {
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+
+    .contact-info a {
+        color: var(--primary-color);
+        text-decoration: none;
+        font-size: 0.813rem;
+    }
+
+    .contact-info i {
+        width: 16px;
+        color: #666;
+        margin-right: 0.5rem;
+    }
+
+    .phone, .email {
+        display: flex;
+        align-items: center;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+    /* Action buttons */
+    .action-buttons {
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+
+    .action-buttons .btn {
+        width: 32px;
+        height: 32px;
+        padding: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    /* Table cell padding */
+    .table td {
+        padding: 0.75rem 0.5rem;
+        vertical-align: middle;
+    }
+
+    /* Remove table hover transform */
+    .table-hover tbody tr:hover {
+        transform: none;
+    }
+
+    /* Hide header text */
+    .table thead th {
+        font-size: 0.75rem;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+    }
+
+    /* Add divider between rows */
+    .table tbody tr {
+        border-bottom: 1px solid #f0f0f0;
+    }
+
+    /* Clickable rows */
+    .table tbody tr {
+        cursor: pointer;
+        transition: background-color 0.2s ease;
+    }
+
+    .table tbody tr:active {
+        background-color: #f3f4f6;
+    }
+
+    /* Phone number link */
+    .phone a {
+        color: var(--success-color);
+    }
+
+    /* Email link */
+    .email a {
+        color: var(--primary-color);
+    }
+}
+
+/* Add touch ripple effect */
+.touch-ripple {
+    position: relative;
+    overflow: hidden;
+}
+
+.touch-ripple:after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 5px;
+    height: 5px;
+    background: rgba(255, 255, 255, 0.5);
+    opacity: 0;
+    border-radius: 100%;
+    transform: scale(1, 1) translate(-50%);
+    transform-origin: 50% 50%;
+}
+
+.touch-ripple:focus:not(:active)::after {
+    animation: ripple 1s ease-out;
+}
+
+@keyframes ripple {
+    0% {
+        transform: scale(0, 0);
+        opacity: 0.5;
+    }
+    20% {
+        transform: scale(25, 25);
+        opacity: 0.3;
+    }
+    100% {
+        opacity: 0;
+        transform: scale(40, 40);
+    }
+}
+
+/* Form Styles */
+.form-label {
+    font-weight: 500;
+    color: #333;
+}
+
+/* Utility Classes */
+.shadow {
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1) !important;
+} 
