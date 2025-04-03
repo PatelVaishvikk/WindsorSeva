@@ -1,7 +1,7 @@
 // pages/api/attendance.js
 import connectDb from '../../lib/db';
 import Attendance from '../../models/Attendance';
-
+import Student from '../../models/Student';
 export default async function handler(req, res) {
   await connectDb();
   const { method } = req;
