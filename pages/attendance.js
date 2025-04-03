@@ -26,8 +26,8 @@ import {
   PointElement,
   LineElement
 } from 'chart.js';
-import io from 'socket.io-client';
-import Navigation from '../components/Navbar'; 
+import Navigation from '../components/Navbar';
+
 // Register Chart.js components
 ChartJS.register(ArcElement, Tooltip, Legend, CategoryScale, LinearScale, PointElement, LineElement);
 
@@ -41,7 +41,7 @@ const Line = dynamic(
   { ssr: false }
 );
 
-// Dynamically import QR code reader
+// Dynamically import QR scanner (using react-qr-scanner now)
 const QrScanner = dynamic(
   () => import('react-qr-scanner').then((mod) => mod.default),
   { ssr: false }
@@ -63,7 +63,7 @@ export default function AttendancePage() {
   const [submitting, setSubmitting] = useState(false);
   const [dailyGraphData, setDailyGraphData] = useState(null);
 
-  // Overall attendance counts (all-time per student)
+  // Overall attendance counts (all-time per student - Fridays only)
   const [overallAttendance, setOverallAttendance] = useState({});
 
   // Trend analysis state
@@ -92,18 +92,6 @@ export default function AttendancePage() {
 
   // Low attendance threshold
   const LOW_ATTENDANCE_THRESHOLD = 50;
-
-  // --- Socket.IO for real-time updates ---
-  useEffect(() => {
-    const socket = io();
-    socket.on('attendanceUpdate', (update) => {
-      console.log('Real-time update received:', update);
-      refreshDailyData();
-    });
-    return () => {
-      socket.disconnect();
-    };
-  }, [assemblyDate]);
 
   // --- Fetch Students ---
   useEffect(() => {
@@ -161,35 +149,31 @@ export default function AttendancePage() {
     }
   };
 
-  // --- Refresh Overall Attendance (all-time) per student ---
- // --- Refresh Overall Attendance (Fridays only) per student ---
-const refreshOverallAttendance = async () => {
+  // --- Refresh Overall Attendance (Fridays only) ---
+  const refreshOverallAttendance = async () => {
     try {
       const res = await fetch('/api/attendance?limit=0');
       const data = await res.json();
       if (!res.ok) throw new Error(data.error || 'Failed to fetch overall attendance');
-      
       const records = data.attendances || [];
       const overall = {};
-      
       records.forEach(rec => {
         // Only count attendance for Friday assemblies
-        const assemblyDay = new Date(rec.assemblyDate).getUTCDay();
-        if (rec.student && rec.student._id && rec.attended && assemblyDay === 5) {
+        const day = new Date(rec.assemblyDate).getUTCDay();
+        if (rec.student && rec.student._id && rec.attended && day === 5) {
           const id = rec.student._id;
           overall[id] = (overall[id] || 0) + 1;
         }
       });
-      
       setOverallAttendance(overall);
     } catch (err) {
       console.error("Error fetching overall attendance:", err);
     }
   };
-  // Load overall attendance on initial load
+
   useEffect(() => {
     refreshOverallAttendance();
-  }, []);
+  }, [success]);
 
   // --- Calculate Daily Attendance Percentage ---
   const dailyPercentage = dailyGraphData ?
@@ -237,36 +221,22 @@ const refreshOverallAttendance = async () => {
   // --- Reset Daily Attendance: Delete all records for current assemblyDate ---
   const handleResetDaily = async () => {
     if (!window.confirm("Are you sure you want to reset all attendance for this assembly date? This action cannot be undone.")) return;
-    
     setSubmitting(true);
     setError('');
     setSuccess('');
-    
     try {
-      // First, get all records for the current assembly date
       const res = await fetch(`/api/attendance?assemblyDate=${assemblyDate}&limit=0`);
       const data = await res.json();
-      
       if (!res.ok) throw new Error(data.error || 'Failed to fetch records');
-      
       const records = data.attendances || [];
-      
-      // Then delete them one by one
       await Promise.all(records.map(async (record) => {
-        const deleteRes = await fetch(`/api/attendance?id=${record._id}`, { 
-          method: 'DELETE' 
-        });
-        
+        const deleteRes = await fetch(`/api/attendance?id=${record._id}`, { method: 'DELETE' });
         if (!deleteRes.ok) {
           const deleteData = await deleteRes.json();
           throw new Error(deleteData.error || 'Failed to delete record');
         }
       }));
-      
-      // Clear the current attendance state
       setAttendance({});
-      
-      // Update success message and refresh data
       setSuccess("Daily attendance has been reset successfully.");
       refreshDailyData();
       refreshOverallAttendance();
@@ -304,18 +274,14 @@ const refreshOverallAttendance = async () => {
       setError('Please provide both start and end dates for trend analysis.');
       return;
     }
-    
     setLoadingTrend(true);
     setError('');
-    
     try {
       const res = await fetch(`/api/attendance?startDate=${trendStartDate}&endDate=${trendEndDate}&limit=0`);
       const data = await res.json();
       if (!res.ok) throw new Error(data.error || 'Failed to fetch trend data');
-      
       const records = data.attendances || [];
       const fridayRecords = records.filter(record => new Date(record.assemblyDate).getUTCDay() === 5);
-      
       const grouped = {};
       fridayRecords.forEach(record => {
         const dateKey = new Date(record.assemblyDate).toISOString().split('T')[0];
@@ -323,13 +289,11 @@ const refreshOverallAttendance = async () => {
         grouped[dateKey].total += 1;
         if (record.attended) grouped[dateKey].attended += 1;
       });
-      
       const sortedDates = Object.keys(grouped).sort();
       const percentages = sortedDates.map(date => {
         const { total, attended } = grouped[date];
         return total > 0 ? Math.round((attended / total) * 100) : 0;
       });
-      
       setTrendGraphData({
         labels: sortedDates.map(date => {
           const d = new Date(date);
@@ -356,19 +320,14 @@ const refreshOverallAttendance = async () => {
     setHistoryStudent(student);
     setLoadingHistory(true);
     setError('');
-    
     try {
       const res = await fetch(`/api/attendance?studentId=${student._id}&limit=0`);
       const data = await res.json();
       if (!res.ok) throw new Error(data.error || 'Failed to fetch history data');
-      
-      const fridayRecords = (data.attendances || []).filter(record => 
+      const fridayRecords = (data.attendances || []).filter(record =>
         new Date(record.assemblyDate).getUTCDay() === 5
       );
-      
-      // Sort records by date (newest first)
       fridayRecords.sort((a, b) => new Date(b.assemblyDate) - new Date(a.assemblyDate));
-      
       setHistoryRecords(fridayRecords);
       setShowHistoryModal(true);
     } catch (err) {
@@ -383,35 +342,27 @@ const refreshOverallAttendance = async () => {
   const handleResetHistory = async () => {
     if (!historyStudent || historyRecords.length === 0) return;
     if (!window.confirm(`Are you sure you want to erase all attendance history for ${historyStudent.first_name} ${historyStudent.last_name}? This action cannot be undone.`)) return;
-    
     setResettingHistory(true);
-    
     try {
-      let deletionErrors = 0;
-      
-      // Delete each record one by one and count errors
       await Promise.all(historyRecords.map(async (record) => {
         try {
           const res = await fetch(`/api/attendance?id=${record._id}`, { method: 'DELETE' });
           const data = await res.json();
-          if (!res.ok) {
-            deletionErrors++;
-            throw new Error(data.error || "Failed to delete a record");
-          }
+          if (!res.ok) throw new Error(data.error || "Failed to delete a record");
         } catch (err) {
-          deletionErrors++;
           console.error(`Error deleting record ${record._id}:`, err);
+          throw err;
         }
       }));
-      
-      if (deletionErrors > 0) {
-        setError(`Failed to delete ${deletionErrors} records. Please try again.`);
-      } else {
-        setSuccess("Attendance history reset successfully.");
-        setHistoryRecords([]);
-        setShowHistoryModal(false);
-        refreshOverallAttendance();
-      }
+      setSuccess("Attendance history reset successfully.");
+      const res = await fetch(`/api/attendance?studentId=${historyStudent._id}&limit=0`);
+      const data = await res.json();
+      const updatedHistory = (data.attendances || []).filter(record =>
+        new Date(record.assemblyDate).getUTCDay() === 5
+      );
+      setHistoryRecords(updatedHistory);
+      if (updatedHistory.length === 0) setShowHistoryModal(false);
+      refreshOverallAttendance();
     } catch (err) {
       console.error("Error resetting attendance history:", err);
       setError(err.message);
@@ -434,7 +385,6 @@ const refreshOverallAttendance = async () => {
       setScanning(true);
       setQrResult(result);
       setScanSuccess('');
-      
       const student = students.find(s => s._id === result);
       if (student) {
         try {
@@ -447,19 +397,12 @@ const refreshOverallAttendance = async () => {
               attended: true
             })
           });
-          
           const data = await res.json();
           if (!res.ok) throw new Error(data.error || 'Failed to mark QR attendance');
-          
-          // Update local state
           setAttendance(prev => ({ ...prev, [student._id]: true }));
           setScanSuccess(`✅ Attendance marked for ${student.first_name} ${student.last_name}`);
-          
-          // Refresh data after a successful scan
           refreshDailyData();
           refreshOverallAttendance();
-          
-          // Clear success message after 3 seconds
           setTimeout(() => {
             setScanSuccess('');
           }, 3000);
@@ -470,8 +413,6 @@ const refreshOverallAttendance = async () => {
       } else {
         setError('Scanned student ID not found.');
       }
-      
-      // Reset scanning after a short delay to prevent duplicate scans
       setTimeout(() => {
         setScanning(false);
       }, 2000);
@@ -529,7 +470,6 @@ const refreshOverallAttendance = async () => {
     }
   ], [attendance, overallAttendance]);
 
-  // Filter students by search text
   const filteredStudents = useMemo(() => {
     return students.filter(student =>
       `${student.first_name} ${student.last_name}`.toLowerCase().includes(searchText.toLowerCase())
@@ -653,8 +593,8 @@ const refreshOverallAttendance = async () => {
                                 backgroundColor: '#f8f9fa',
                                 fontSize: '0.9rem',
                                 fontWeight: 'bold'
-                              },
-                            },
+                              }
+                            }
                           }}
                         />
                       </div>
@@ -802,7 +742,6 @@ const refreshOverallAttendance = async () => {
                         <Card.Body>
                           <Card.Title className="text-center mb-3">Scan Student QR Code</Card.Title>
                           <p className="text-center text-muted mb-4">Hold your device in front of the QR code with student ID.</p>
-                          
                           <div className="text-center mb-3">
                             <Form.Group controlId="qrAssemblyDate" className="mb-3">
                               <Form.Label>Recording attendance for:</Form.Label>
@@ -814,7 +753,6 @@ const refreshOverallAttendance = async () => {
                               />
                             </Form.Group>
                           </div>
-                          
                           <div className="qr-reader-container mx-auto" style={{ maxWidth: '350px' }}>
                             <QrScanner
                               delay={300}
@@ -824,13 +762,11 @@ const refreshOverallAttendance = async () => {
                               facingMode="environment"
                             />
                           </div>
-                          
                           {scanSuccess && (
                             <Alert variant="success" className="mt-3 text-center">
                               {scanSuccess}
                             </Alert>
                           )}
-                          
                           {qrResult && !scanSuccess && (
                             <div className="mt-3 text-center">
                               <p>Scanning QR code...</p>
@@ -852,6 +788,7 @@ const refreshOverallAttendance = async () => {
           show={showHistoryModal} 
           onHide={() => setShowHistoryModal(false)} 
           size="lg"
+          centered
         >
           <Modal.Header closeButton>
             <Modal.Title>
