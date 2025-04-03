@@ -34,7 +34,7 @@ export default async function handler(req, res) {
           .populate('student')
           .sort({ assemblyDate: -1 })
           .skip((pageNum - 1) * limitNum)
-          .limit(limitNum)
+          .limit(limitNum === 0 ? undefined : limitNum)  // Handle limit=0 case to return all records
           .lean();
 
         res.status(200).json({ attendances, total, page: pageNum });
@@ -57,10 +57,7 @@ export default async function handler(req, res) {
         });
         await newAttendance.save();
 
-        // Broadcast new attendance record via Socket.IO
-        if (global.io) {
-          global.io.emit('attendanceUpdate', { attendance: newAttendance });
-        }
+        // Socket.IO code removed
 
         res.status(201).json({ attendance: newAttendance });
       } catch (err) {
