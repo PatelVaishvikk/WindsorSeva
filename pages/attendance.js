@@ -42,8 +42,8 @@ const Line = dynamic(
 );
 
 // Dynamically import QR code reader
-const QrReader = dynamic(
-  () => import('react-qr-reader').then((mod) => mod.default),
+const QrScanner = dynamic(
+  () => import('react-qr-scanner').then((mod) => mod.default),
   { ssr: false }
 );
 
@@ -816,7 +816,7 @@ const refreshOverallAttendance = async () => {
                           </div>
                           
                           <div className="qr-reader-container mx-auto" style={{ maxWidth: '350px' }}>
-                            <QrReader
+                            <QrScanner
                               delay={300}
                               onError={handleError}
                               onScan={handleScan}
